@@ -1,0 +1,6 @@
+FROM python:3.6.4-stretch
+RUN apt-get update
+RUN apt-get install -y postgresql-client
+RUN pip3 install psycopg2 ipython flask flask-restful redis python-dateutil requests
+COPY ./app/ /app/
+CMD /usr/local/bin/python3 /app/app.py

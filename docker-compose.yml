@@ -1,0 +1,36 @@
+version: "3"
+services:
+  redis:
+    ports:
+      - "6379:6379"
+    image: redis:latest
+    restart: always
+  db:
+    ports:
+      - "5432:5432"
+    image: timescale/timescaledb:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DATABASE: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes: 
+      - ./app/db/entrypoint:/docker-entrypoint-initdb.d/
+  app:
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db/postgres
+      PGDATABASE: postgres
+      PGHOST: db
+      PGUSER: postgres
+    ports:
+      - "5000:5000"
+    links:
+      - db
+      - redis 
+    image: apihw:latest
+    volumes: 
+      - ./app:/app
+    command: ["./app/wait-for-postgres.sh", "db", "python", "./app/app.py"]

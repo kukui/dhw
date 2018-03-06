@@ -1,0 +1,16 @@
+System initialization
+ - create the schema 
+ - set the initial population count for Space A to 20
+ - set the initial population count for Space B to 10
+
+ - import all data through the data ingestion endpoint
+
+Tests
+
+data ingestion endpoint
+
+
+
+realtime endpoint
+historical endpoint
+
